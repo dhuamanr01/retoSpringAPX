@@ -1,22 +1,12 @@
 package com.apx.ejemploAPX.services;
 
-
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collections;
+import java.net.UnknownHostException;
 import java.util.List;
-
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
 import com.apx.ejemploAPX.model.Request;
 import com.apx.ejemploAPX.model.Responses;
 import com.apx.ejemploAPX.model.Usuario;
@@ -24,57 +14,40 @@ import com.apx.ejemploAPX.util.DateUtil;
 
 public class ResponsesServiceImpl implements IResponsesService {
 
-	
-	@Autowired
+//	@Autowired
 	private Responses responses;
 	
 	@Autowired
-	private Request request;
-
-
+	private  RestTemplate restTemplate;
+	
 	@Value("${payload}") 
 	 private String url;
 
-	
-	public ResponsesServiceImpl() {
-		super();
-	}
-
-
-
 	@Override
-	public Responses registrar() {
-		LocalDateTime ldt = LocalDateTime.now();
-		responses.setOperationDate(ldt);
-		responses.setData(getUsuarios());
-		
+	public Responses registrar()  {
+		try {
+			responses.setOperationDate(DateUtil.getDateTimeFormat());
+			responses.setData(getUsuarios());
+		}catch(UnknownHostException  e) {
+			e.printStackTrace();
+		}
 		return responses;
 	}
 
+	@Override
+	public List<Usuario> getUsuarios() throws  UnknownHostException {
 
-	
-	public List<Usuario> getUsuarios() {
-		 RestTemplate restTemplate= new RestTemplate();
+		List<Usuario> lstUsuarios=null;
+		try {
+			ResponseEntity<Request> request = restTemplate.getForEntity(url, Request.class);
+			lstUsuarios =  request.getBody().getData();
+			lstUsuarios = lstUsuarios.stream()
+		        .map(u -> new Usuario(u.getId(), u.getLast_name(), u.getEmail()))
+		        .collect(Collectors.toList());
+		}catch(Exception e) {
+			throw new UnknownHostException("No se encuentra la dirección IP del host: "+url); 
+		}
 
-//		 HttpHeaders headers = new HttpHeaders();
-//	     headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-//	     headers.set("User-Agent", "miAplicacion");
-	     HttpHeaders headers = new HttpHeaders();
-			headers.add("user-agent", "Application");
-			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			headers.setContentType(MediaType.APPLICATION_JSON);
-			
-	     HttpEntity <String> entity = new HttpEntity<String>(headers);
-
-		 ResponseEntity<Request> request = restTemplate.exchange(url, HttpMethod.GET, entity, Request.class);
-		 System.out.println("request data "+request.getBody().getData());
-		 System.out.println("request total "+request.getBody().getTotal());
-         List<Usuario> lstUsuarios =  request.getBody().getData();
-	
-         List<Usuario> result = lstUsuarios.stream()
-	        .map(u -> new Usuario(u.getId(), u.getLastName(), u.getEmail()))
-	        .collect(Collectors.toList());
-	
         return lstUsuarios;
     }
 
@@ -83,9 +56,6 @@ public class ResponsesServiceImpl implements IResponsesService {
 		this.responses = responses;
 	}
 
-	public void setRequest(Request request) {
-		this.request = request;
-	}
 	
 	
 }

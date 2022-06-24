@@ -10,39 +10,36 @@ import java.util.List;
 
 
 
-public class Responses implements Serializable  {
+public class Responses   {
 
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-
-
-	private LocalDateTime operationDate;
+	private String operationDate;
 
 	private List<Usuario> data;
 
-	
-	
 	public Responses() {
 		super();
 		
 	}
-	public Responses(LocalDateTime operationDate, List<Usuario> data) {
+
+	public Responses(String operationDate, List<Usuario> data) {
 		super();
 		this.operationDate = operationDate;
 		this.data = data;
 	}
 
-	public LocalDateTime getOperationDate() {
+
+
+	public String getOperationDate() {
 		return operationDate;
 	}
 
-	public void setOperationDate(LocalDateTime operationDate) {
+
+
+	public void setOperationDate(String operationDate) {
 		this.operationDate = operationDate;
 	}
+
+
 
 	public List<Usuario> getData() {
 		return data;

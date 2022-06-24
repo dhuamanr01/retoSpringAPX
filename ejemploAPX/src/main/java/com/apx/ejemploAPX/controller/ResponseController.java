@@ -24,45 +24,29 @@ public class ResponseController {
 	@Autowired
 	private IResponsesService service;
 
-	  
-//	@PostMapping(path="/prueba")
-//	  public String prueba() {
-//	  return "hola";
-//	}
-	
 	  @PostMapping(path="/registrar", produces="application/json")
-	  public ResponseEntity<Responses> registrar() {
-		  
-	    ResponseEntity<Responses> response = null;
-	 
+	  public ResponseEntity<?> registrar() {
+		  logger.info("Method_Initialize");
+	    ResponseEntity<?> response = null;
 	    try {
-	    	Responses rspt = this.service.registrar();
-		    response = new ResponseEntity<Responses>(rspt,HttpStatus.CREATED);
+	    	Responses respuesta = this.service.registrar();
+	    	response = new ResponseEntity<Responses>(respuesta,HttpStatus.CREATED);
 	    }
 	    
 	    catch (Exception ex) {
 	      logger.error(ex.getMessage(), ex);
-	      response = new ResponseEntity<Responses>(HttpStatus.INTERNAL_SERVER_ERROR);
+	      response = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 
 	    }
 	    finally {
-	    	 logger.info("method finalize");
+	    	 logger.info("Method_Finalize");
 	    }
 	    return response;
 	  }
 
-
-	public IResponsesService getService() {
-		return service;
-	}
-
-
 	public void setService(IResponsesService service) {
 		this.service = service;
 	}
-	  
-	  
-	  
-	  
+	   
 	  
 }
