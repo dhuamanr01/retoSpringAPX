@@ -22,11 +22,8 @@ import com.apx.ejemploAPX.model.Responses;
 import com.apx.ejemploAPX.model.Usuario;
 import com.apx.ejemploAPX.util.DateUtil;
 
-
-
 public class ResponsesServiceImpl implements IResponsesService {
 
-	
 	
 	@Autowired
 	private Responses responses;
@@ -39,6 +36,12 @@ public class ResponsesServiceImpl implements IResponsesService {
 	 private String url;
 
 	
+	public ResponsesServiceImpl() {
+		super();
+	}
+
+
+
 	@Override
 	public Responses registrar() {
 		LocalDateTime ldt = LocalDateTime.now();
@@ -53,20 +56,24 @@ public class ResponsesServiceImpl implements IResponsesService {
 	public List<Usuario> getUsuarios() {
 		 RestTemplate restTemplate= new RestTemplate();
 
-		 HttpHeaders headers = new HttpHeaders();
-	      headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-	      HttpEntity <String> entity = new HttpEntity<String>(headers);
-//		  headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-////		  headers.set("Content-type", "application/json;charset=UTF-8");
-//		  headers.set("User-Agent", "MyAppName/1.0.0");
-//		 HttpEntity<String> entity = new HttpEntity<>(headers);
-		 
-		 ResponseEntity<Request> response = restTemplate.exchange(url, HttpMethod.GET, entity, Request.class);
-         List<Usuario> lstUsuarios =  response.getBody().getData();
+//		 HttpHeaders headers = new HttpHeaders();
+//	     headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+//	     headers.set("User-Agent", "miAplicacion");
+	     HttpHeaders headers = new HttpHeaders();
+			headers.add("user-agent", "Application");
+			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			
+	     HttpEntity <String> entity = new HttpEntity<String>(headers);
+
+		 ResponseEntity<Request> request = restTemplate.exchange(url, HttpMethod.GET, entity, Request.class);
+		 System.out.println("request data "+request.getBody().getData());
+		 System.out.println("request total "+request.getBody().getTotal());
+         List<Usuario> lstUsuarios =  request.getBody().getData();
 	
-//         List<Usuario> result = lstUsuarios.stream()
-//	        .map(u -> new Usuario(u.getId(), u.getLastName(), u.getEmail()))
-//	        .collect(Collectors.toList());
+         List<Usuario> result = lstUsuarios.stream()
+	        .map(u -> new Usuario(u.getId(), u.getLastName(), u.getEmail()))
+	        .collect(Collectors.toList());
 	
         return lstUsuarios;
     }
@@ -75,9 +82,7 @@ public class ResponsesServiceImpl implements IResponsesService {
 	public void setResponses(Responses responses) {
 		this.responses = responses;
 	}
-//
-//	
-//
+
 	public void setRequest(Request request) {
 		this.request = request;
 	}

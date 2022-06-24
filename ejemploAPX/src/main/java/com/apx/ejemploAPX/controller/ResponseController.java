@@ -25,12 +25,16 @@ public class ResponseController {
 	private IResponsesService service;
 
 	  
-	  @PostMapping(path="/registrar",produces=MediaType.APPLICATION_JSON_VALUE)
-	  public ResponseEntity<?> registrar() {
-		  //@RequestBody Responses request
+//	@PostMapping(path="/prueba")
+//	  public String prueba() {
+//	  return "hola";
+//	}
+	
+	  @PostMapping(path="/registrar", produces="application/json")
+	  public ResponseEntity<Responses> registrar() {
+		  
 	    ResponseEntity<Responses> response = null;
 	 
-
 	    try {
 	    	Responses rspt = this.service.registrar();
 		    response = new ResponseEntity<Responses>(rspt,HttpStatus.CREATED);
@@ -44,7 +48,6 @@ public class ResponseController {
 	    finally {
 	    	 logger.info("method finalize");
 	    }
-
 	    return response;
 	  }
 
