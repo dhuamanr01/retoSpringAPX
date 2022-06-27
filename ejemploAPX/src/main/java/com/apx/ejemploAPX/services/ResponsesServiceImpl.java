@@ -27,7 +27,7 @@ public class ResponsesServiceImpl implements IResponsesService {
 	public Responses registrar()  {
 		try {
 			responses.setOperationDate(DateUtil.getDateTimeFormat());
-			responses.setData(getUsuarios());
+			responses.setData(this.getUsuarios());
 		}catch(UnknownHostException  e) {
 			e.printStackTrace();
 		}

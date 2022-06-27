@@ -15,9 +15,7 @@ public class EjemploApxApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EjemploApxApplication.class, args);
-		
-
-        
+		  
 	}
 
 }
