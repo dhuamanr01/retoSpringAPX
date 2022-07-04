@@ -10,18 +10,18 @@ import java.util.List;
 
 
 
-public class Responses   {
+public class Response   {
 
 	private String operationDate;
 
 	private List<Usuario> data;
 
-	public Responses() {
+	public Response() {
 		super();
 		
 	}
 
-	public Responses(String operationDate, List<Usuario> data) {
+	public Response(String operationDate, List<Usuario> data) {
 		super();
 		this.operationDate = operationDate;
 		this.data = data;

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.apx.ejemploAPX.model.Responses;
+import com.apx.ejemploAPX.model.Response;
 import com.apx.ejemploAPX.services.IResponsesService;
 
 
@@ -27,12 +27,12 @@ public class ResponseController {
 	  @PostMapping(path="/registrar", produces="application/json")
 	  public ResponseEntity<?> registrar() {
 		  logger.info("Method_Initialize");
-	    ResponseEntity<?> response = null;
+	    ResponseEntity<?> response;
 	    try {
-	    	Responses respuesta = this.service.registrar();
-	    	response = new ResponseEntity<Responses>(respuesta,HttpStatus.CREATED);
+	    	Response respuesta = this.service.registrar();
+	    	response = new ResponseEntity<Response>(respuesta,HttpStatus.CREATED);
 	    }
-	    
+	   
 	    catch (Exception ex) {
 	      logger.error(ex.getMessage(), ex);
 	      response = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);

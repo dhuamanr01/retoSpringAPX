@@ -8,7 +8,7 @@
     http://www.springframework.org/schema/mvc
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
     
-	<bean id="responses" class="com.apx.ejemploAPX.model.Responses">
+	<bean id="response" class="com.apx.ejemploAPX.model.Response">
 	</bean>	
 	<bean id="usuario" class="com.apx.ejemploAPX.model.Usuario">
 	</bean>
@@ -16,7 +16,7 @@
 	</bean>		
    
 	<bean id="responsesServiceImpl" class="com.apx.ejemploAPX.services.ResponsesServiceImpl">
-        <property name="responses" ref="responses" />
+        <property name="response" ref="response" />
     </bean>	
    
 	<bean name="restTemplate" class="org.springframework.web.client.RestTemplate"/>
